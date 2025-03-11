@@ -48,6 +48,17 @@ declare class EventEmitter<
     context?: Context
   ): this;
 
+  prepend<T extends EventEmitter.EventNames<EventTypes>>(
+    event: T,
+    fn: EventEmitter.EventListener<EventTypes, T>,
+    context?: Context
+  ): this;
+  prependListener<T extends EventEmitter.EventNames<EventTypes>>(
+    event: T,
+    fn: EventEmitter.EventListener<EventTypes, T>,
+    context?: Context
+  ): this;
+
   /**
    * Add a one-time listener for a given event.
    */

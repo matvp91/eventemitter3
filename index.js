@@ -70,6 +70,21 @@ function addListener(emitter, event, fn, context, once) {
   return emitter;
 }
 
+function prependListener(emitter, event, fn, context, once) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('The listener must be a function');
+  }
+
+  var listener = new EE(fn, context || emitter, once)
+    , evt = prefix ? prefix + event : event;
+
+  if (!emitter._events[evt]) emitter._events[evt] = listener, emitter._eventsCount++;
+  else if (!emitter._events[evt].fn) emitter._events[evt].unshift(listener);
+  else emitter._events[evt] = [emitter._events[evt], listener];
+
+  return emitter;
+}
+
 /**
  * Clear event by name.
  *
@@ -241,6 +256,14 @@ EventEmitter.prototype.once = function once(event, fn, context) {
   return addListener(this, event, fn, context, true);
 };
 
+EventEmitter.prototype.prepend = function prepend(event, fn, context) {
+  return prependListener(this, event, fn, context, false);
+};
+
+EventEmitter.prototype.prependOnce = function prependOnce(event, fn, context) {
+  return prependListener(this, event, fn, context, true);
+}
+
 /**
  * Remove the listeners of a given event.
  *
@@ -317,6 +340,7 @@ EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
 //
 EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
 EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+EventEmitter.prototype.prependListener = EventEmitter.prototype.prepend;
 
 //
 // Expose the prefix.
