@@ -1,5 +1,5 @@
 {
-  "name": "@matvp/eventemitter3",
+  "name": "@matvp91/eventemitter3",
   "version": "5.0.1",
   "description": "EventEmitter3 focuses on performance while maintaining a Node.js AND browser compatible interface.",
   "exports": {
